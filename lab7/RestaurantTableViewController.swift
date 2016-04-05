@@ -8,11 +8,12 @@
 
 import UIKit
 import Parse
-
 class RestaurantTableViewController: UITableViewController {
 // MARK: Properties
     var restaurants = [Restaurant]()
     //************只需要给toUser赋予传过来的username就大功告成了！
+    var pagniatedOutput: AWSDynamoDBPaginatedOutput?
+    var tableRows:Array<DDBTableRow>?
 
     var toUser=PFUser.currentUser()!.username
     override func viewDidLoad() {
@@ -87,9 +88,38 @@ class RestaurantTableViewController: UITableViewController {
         userPhoto.saveInBackground()
 
     }
-    
+
     func getdata(){
-        
+        print("good");
+        let dynamodbMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper();
+        let queryExpression = AWSDynamoDBQueryExpression()
+        queryExpression.hashKeyValues = "1";
+        queryExpression.hashKeyAttribute = "ObjectId";
+        dynamodbMapper.query(DDBTableRow.self, expression: queryExpression) .continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: { (task:AWSTask!) -> AnyObject! in
+            if (task.error != nil) {
+//                print("Error: \(task.error)")
+                
+                let alertController = UIAlertController(title: "Failed to query a test table.", message: task.error!.description, preferredStyle: UIAlertControllerStyle.Alert)
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: { (action:UIAlertAction) -> Void in
+                })
+                alertController.addAction(okAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                if (task.result != nil) {
+                    print("hehe");
+                    self.pagniatedOutput = task.result as? AWSDynamoDBPaginatedOutput
+                    print(self.pagniatedOutput!.items)
+                    for item in self.pagniatedOutput!.items as! [DDBTableRow] {
+                        self.tableRows?.append(item)
+                        print(self.tableRows);
+                    }
+                }
+                self.performSegueWithIdentifier("unwindToMainSegue", sender: self)
+            }
+            return nil
+        })
+        dynamodbMapper.query(DDBTableRow.self, expression: queryExpression)
+//        queryExpression.hashKeyValues = self.
         let query = PFQuery(className:"Restaurant")
         query.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in

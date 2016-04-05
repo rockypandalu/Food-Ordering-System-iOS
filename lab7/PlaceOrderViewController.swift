@@ -72,6 +72,21 @@ class PlaceOrderViewController: UIViewController {
                     print("Error: \(error!) \(error!.userInfo)")
                 }
             }
+            let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+            let tasks = NSMutableArray()
+            let tableRow = DDBOrder();
+            tableRow.ID = "Good";
+            tableRow.OrderTime = 1305;
+            tableRow.Restaurant = 1;
+            tableRow.HotFood = 1;
+            tableRow.ColdFood = 0;
+            tableRow.Distance = 1000;
+
+            tasks.addObject(dynamoDBObjectMapper.save(tableRow))
+            
+
+            
+            
             while orderinfo.objectId==nil{
                 usleep(100)
             }
