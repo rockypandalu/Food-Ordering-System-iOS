@@ -31,6 +31,10 @@ class PlaceOrderViewController: UIViewController {
     var toPassCal: Int!
     var toPassNut: String!
     var toUser: String!
+    var hot:Int!
+    var cold:Int!
+    var Order: [String] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let price="Price: "+toPassPrice
@@ -72,6 +76,22 @@ class PlaceOrderViewController: UIViewController {
                     print("Error: \(error!) \(error!.userInfo)")
                 }
             }
+            let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+            let tasks = NSMutableArray()
+            let tableRow = DDBOrder();
+            var uuid = NSUUID().UUIDString
+            tableRow.ID = uuid;
+            tableRow.OrderTime = 1305
+            tableRow.Restaurant = 1
+            tableRow.HotFood = cold
+            tableRow.ColdFood = hot
+            tableRow.Distance = 1000
+            tableRow.Order = Order.joinWithSeparator(";")
+            tasks.addObject(dynamoDBObjectMapper.save(tableRow))
+            
+
+            
+            
             while orderinfo.objectId==nil{
                 usleep(100)
             }
@@ -80,6 +100,15 @@ class PlaceOrderViewController: UIViewController {
             
             
             
+        }
+        if (segue.identifier == "AddMore"){
+            let svc = segue.destinationViewController as! MealTableViewController;
+            svc.toPassrest = toPassRest
+            svc.toUser=toUser
+            svc.cold=cold
+            svc.hot=hot
+            svc.Order=Order
+
         }
     }
     
@@ -128,8 +157,6 @@ class PlaceOrderViewController: UIViewController {
                             print("Error: \(error!) \(error!.userInfo)")
                         }
                     }
-                    
-                    
                     
                 }
             }

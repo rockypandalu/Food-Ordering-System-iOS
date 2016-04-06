@@ -16,6 +16,10 @@ class MealTableViewController: UITableViewController {
     var toPassrest: String!
     var meals = [Meal]()
     var toUser:String!
+    var hot:Int = 0
+    var cold:Int = 0
+    var Order: [String] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,6 +57,7 @@ class MealTableViewController: UITableViewController {
 
 
     func getdata(){
+        let imagePickerController:UIImagePickerController = UIImagePickerController()
         
         let query = PFQuery(className:"Meal")
         query.whereKey("restaurantName", equalTo: toPassrest)
@@ -70,7 +75,7 @@ class MealTableViewController: UITableViewController {
                             if error == nil {
                                 if let imageData = imageData {
                                     let image = UIImage(data:imageData)
-                                    let R = Meal(name: object["mealName"] as! String, photo: image, price:object["price"] as! Float, calorie:object["Calorie"] as! Int, nutrition:object["MajorNutrition"] as! String)
+                                    let R = Meal(name: object["mealName"] as! String, photo: image, price:object["price"] as! Float, calorie:object["Calorie"] as! Int, nutrition:object["MajorNutrition"] as! String, HotCold: object["HotCold"] as! Bool)
                                     self.meals.append(R!)
                                     self.tableView.reloadData()
                                 }
@@ -122,7 +127,7 @@ class MealTableViewController: UITableViewController {
         // Get Cell Label
         //let indexPath = tableView.indexPathForSelectedRow;
         //let currentCell = tableView.cellForRowAtIndexPath(indexPath!) as UITableViewCell!;
-        
+       ss
         valueToPass = meals[indexPath!.row].itemSecureNumber
         performSegueWithIdentifier("qrcode", sender: self)
         
@@ -132,6 +137,12 @@ class MealTableViewController: UITableViewController {
     if (segue.identifier == "ToPlaceOrder"){
         let selectedIndex=self.tableView.indexPathForCell(sender as! MealTableViewCell)
         let svc = segue.destinationViewController as! PlaceOrderViewController;
+        if (meals[(selectedIndex!.row)].HotCold){
+            hot = hot + 1
+        }
+        else{
+            cold = cold + 1
+        }
         svc.toPassImage=meals[(selectedIndex!.row)].photo
         svc.toPassMeal=meals[(selectedIndex!.row)].name
         svc.toPassPrice=NSString(format: "%.2f", meals[(selectedIndex!.row)].price) as String
@@ -139,6 +150,12 @@ class MealTableViewController: UITableViewController {
         svc.toPassNut=meals[(selectedIndex!.row)].majorNutrition
         svc.toPassRest=toPassrest
         svc.toUser=toUser
+        svc.cold=cold
+        svc.hot=hot
+        Order.append(meals[(selectedIndex!.row)].name)
+        svc.Order = Order
+//        svc.Order = Order.append("hehe")
+//        svc.Order=Order.append(meals[(selectedIndex!.row)].name)
         
     }
     }

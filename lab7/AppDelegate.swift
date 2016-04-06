@@ -26,6 +26,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("pLTBMuOCTnnK8FHWSOpxDsMYpRpyZP7xCPCDGKpj",
             clientKey: "FYyVdCRZkao6XyJtSs8g3Zj4iszbgmDoqzhflIlr")
         
+        
+        
+
+        
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:.USEast1,
+                                                                identityPoolId:"us-east-1:1304f3f8-cbef-47c0-a879-ec2764d0ca8b")
+        
+        let configuration = AWSServiceConfiguration(region:.USEast1, credentialsProvider:credentialsProvider)
+        
+        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         sleep(3)
