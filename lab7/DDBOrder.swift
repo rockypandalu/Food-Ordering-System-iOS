@@ -16,6 +16,7 @@ class DDBOrder :AWSDynamoDBObjectModel ,AWSDynamoDBModeling  {
     var Distance:NSNumber? = 0
     var DeliveryTime:NSNumber? = 0
     var Order:String?
+    var Drink:NSNumber? = 0
     
     class func dynamoDBTableName() -> String! {
         return "Order"

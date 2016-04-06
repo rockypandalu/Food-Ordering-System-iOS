@@ -86,6 +86,7 @@ class PlaceOrderViewController: UIViewController {
             tableRow.HotFood = cold
             tableRow.ColdFood = hot
             tableRow.Distance = 1000
+            tableRow.Drink = 2
             tableRow.Order = Order.joinWithSeparator(";")
             tasks.addObject(dynamoDBObjectMapper.save(tableRow))
             

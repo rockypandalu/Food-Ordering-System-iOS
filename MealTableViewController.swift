@@ -18,11 +18,10 @@ class MealTableViewController: UITableViewController {
     var toUser:String!
     var hot:Int = 0
     var cold:Int = 0
-    var Order: [String] = []
-
+    var Order: ([String])?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Load the sample data.
         //loadSampleMeals()
         getdata()
@@ -152,8 +151,8 @@ class MealTableViewController: UITableViewController {
         svc.toUser=toUser
         svc.cold=cold
         svc.hot=hot
-        Order.append(meals[(selectedIndex!.row)].name)
-        svc.Order = Order
+        Order?.append(meals[(selectedIndex!.row)].name)
+        svc.Order = Order!
 //        svc.Order = Order.append("hehe")
 //        svc.Order=Order.append(meals[(selectedIndex!.row)].name)
         
