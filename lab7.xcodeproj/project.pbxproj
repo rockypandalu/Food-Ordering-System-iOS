@@ -52,7 +52,10 @@
 		5CF2453F1BF0E7F900B7C17D /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF2453D1BF0E7F900B7C17D /* ResultViewController.swift */; };
 		AF2ACF8C1BFC32EA00882AD9 /* loginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2ACF8B1BFC32EA00882AD9 /* loginViewController.swift */; };
 		AF2ACF8E1BFC330900882AD9 /* signupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2ACF8D1BFC330900882AD9 /* signupViewController.swift */; };
+		E8239F801CB202B0003EB8EB /* DDBTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8239F7F1CB202B0003EB8EB /* DDBTableRow.swift */; };
 		E8239F821CB420D6003EB8EB /* DDBOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8239F811CB420D6003EB8EB /* DDBOrder.swift */; };
+		E8549FDB1CD6997100EAE6E0 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8549FDA1CD6997100EAE6E0 /* DownloadViewController.swift */; };
+		E868704A1CC686E600298C0E /* DDBMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86870491CC686E600298C0E /* DDBMeal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,7 +119,10 @@
 		AC9EE2B4AC8193AF8D9A42A0 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF2ACF8B1BFC32EA00882AD9 /* loginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loginViewController.swift; sourceTree = "<group>"; };
 		AF2ACF8D1BFC330900882AD9 /* signupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = signupViewController.swift; sourceTree = "<group>"; };
+		E8239F7F1CB202B0003EB8EB /* DDBTableRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DDBTableRow.swift; path = ../../../../../DDBTableRow.swift; sourceTree = "<group>"; };
 		E8239F811CB420D6003EB8EB /* DDBOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDBOrder.swift; sourceTree = "<group>"; };
+		E8549FDA1CD6997100EAE6E0 /* DownloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
+		E86870491CC686E600298C0E /* DDBMeal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDBMeal.swift; sourceTree = "<group>"; };
 		E8F9D7F41CAF436C00DB515C /* BridgeHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgeHeader.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -223,7 +229,10 @@
 				5C14AF571BF049B7006E9267 /* Meal */,
 				5C93AE1A1BFA1B100085AC49 /* OrderResult */,
 				5C8BC7901BEAA6B50048050E /* AppDelegate.swift */,
+				E8239F7F1CB202B0003EB8EB /* DDBTableRow.swift */,
+				E86870491CC686E600298C0E /* DDBMeal.swift */,
 				E8239F811CB420D6003EB8EB /* DDBOrder.swift */,
+				E8549FDA1CD6997100EAE6E0 /* DownloadViewController.swift */,
 				5C7CEAB41BF7BB9200B3A2A0 /* PlaceOrderViewController.swift */,
 				E8F9D7F41CAF436C00DB515C /* BridgeHeader.h */,
 				AF2ACF8B1BFC32EA00882AD9 /* loginViewController.swift */,
@@ -485,7 +494,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8239F801CB202B0003EB8EB /* DDBTableRow.swift in Sources */,
 				5C93AE181BFA1ACF0085AC49 /* FeedbackControl.swift in Sources */,
+				E868704A1CC686E600298C0E /* DDBMeal.swift in Sources */,
 				5C568E0F1BF3CCB400F48F81 /* CIColorExtension.swift in Sources */,
 				5C14AF591BF049F4006E9267 /* Meal.swift in Sources */,
 				5CD336101BF063CD001E8600 /* MealTableViewCell.swift in Sources */,
@@ -501,6 +512,7 @@
 				5C8BC7911BEAA6B50048050E /* AppDelegate.swift in Sources */,
 				5CF2453E1BF0E7F900B7C17D /* ResultViewController.swift in Sources */,
 				AF2ACF8C1BFC32EA00882AD9 /* loginViewController.swift in Sources */,
+				E8549FDB1CD6997100EAE6E0 /* DownloadViewController.swift in Sources */,
 				E8239F821CB420D6003EB8EB /* DDBOrder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

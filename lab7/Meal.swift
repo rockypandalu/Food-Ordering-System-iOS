@@ -17,10 +17,10 @@ class Meal {
     var price: Float
     var calorie: Int
     var majorNutrition: String
-    var HotCold: Bool
+    var HotCold: Int
     // MARK: Initialization
     
-    init?(name: String, photo: UIImage?,price: Float, calorie:Int, nutrition: String, HotCold: Bool) {
+    init?(name: String, photo: UIImage?,price: Float, calorie:Int, nutrition: String, HotCold: Int) {
         // Initialize stored properties.
         self.name = name
         self.photo = photo

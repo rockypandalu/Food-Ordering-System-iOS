@@ -23,15 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.enableLocalDatastore()
         
         // Initialize Parse.
-        Parse.setApplicationId("pLTBMuOCTnnK8FHWSOpxDsMYpRpyZP7xCPCDGKpj",
-            clientKey: "FYyVdCRZkao6XyJtSs8g3Zj4iszbgmDoqzhflIlr")
+        Parse.setApplicationId("",
+            clientKey: "")
         
         
         
 
         
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:.USEast1,
-                                                                identityPoolId:"yourIdentityPoolId")
+                                                                identityPoolId:"")
         
         let configuration = AWSServiceConfiguration(region:.USEast1, credentialsProvider:credentialsProvider)
         

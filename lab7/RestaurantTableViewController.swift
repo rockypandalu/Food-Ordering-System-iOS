@@ -17,8 +17,11 @@ class RestaurantTableViewController: UITableViewController {
     //************只需要给toUser赋予传过来的username就大功告成了！
     var pagniatedOutput: AWSDynamoDBPaginatedOutput?
     var tableRows:Array<DDBTableRow>?
-
     var toUser=PFUser.currentUser()!.username
+    var outimage: UIImage?
+    var downloadRequests = Array<AWSS3TransferManagerDownloadRequest?>()
+    var downloadFileURLs = Array<NSURL?>()
+    let downloadRequest = AWSS3TransferManagerDownloadRequest()
     override func viewDidLoad() {
         super.viewDidLoad()
         //loadSampleRestaurants()
@@ -35,16 +38,7 @@ class RestaurantTableViewController: UITableViewController {
     }
     
     
-        func loadSampleRestaurants() {
-            
-            let photo1 = UIImage(named: "Image")!
-            let R1 = Restaurant(name: "Xian Famous Food", photo: photo1, rating:5)!
-            let photo2 = UIImage(named: "Image-1")!
-            let R2 = Restaurant(name: "Macdonald", photo: photo2, rating: 4)!
-            let photo3 = UIImage(named: "Image-2")!
-            let R3 = Restaurant(name: "Panda Express", photo: photo3, rating:2)!
-            restaurants+=[R1,R2,R3]
-        }
+
 
 
     override func didReceiveMemoryWarning() {
@@ -68,61 +62,68 @@ class RestaurantTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier = "RestaurantTableViewCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! RestaurantTableViewCell
-
         // Configure the cell...
         let restaurant=restaurants[indexPath.row]
         cell.RestaurantLabel.text=restaurant.name
-        cell.RestaurantImage.image=restaurant.photo
+//        cell.RestaurantImage.image=restaurant.photo
+        cell.RestaurantImage.image = UIImage(named: "Uncle Luo Yang")
         cell.ratingControl.rating=restaurant.rating
       //cell.ratingRatingControl.rating=restaurant.rating
         
         return cell
     }
-    func upLoadRestaurantInfo(){
-        //used only when upload a restaurant info
-        let photo1 = UIImage(named: "Image-1")!
-        let imageData = UIImagePNGRepresentation(photo1)
-        let imageFile = PFFile(name:"image.png", data:imageData!)
-        
-        let userPhoto = PFObject(className:"Restaurant")
-        userPhoto["restaurantName"] = "Macdonald"
-        userPhoto["score"]=2
-        userPhoto["photo"] = imageFile
-        userPhoto.saveInBackground()
-
-    }
-
-    func getdata(){
-//        print("good");
-//        let dynamodbMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper();
-//        let queryExpression = AWSDynamoDBQueryExpression()
-//        queryExpression.hashKeyValues = "1";
-//        queryExpression.hashKeyAttribute = "ObjectId";
-//        dynamodbMapper.query(DDBTableRow.self, expression: queryExpression) .continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: { (task:AWSTask!) -> AnyObject! in
-//            if (task.error != nil) {
-////                print("Error: \(task.error)")
-//                
-//                let alertController = UIAlertController(title: "Failed to query a test table.", message: task.error!.description, preferredStyle: UIAlertControllerStyle.Alert)
-//                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: { (action:UIAlertAction) -> Void in
-//                })
-//                alertController.addAction(okAction)
-//                self.presentViewController(alertController, animated: true, completion: nil)
-//            } else {
-//                if (task.result != nil) {
-//                    print("hehe");
-//                    self.pagniatedOutput = task.result as? AWSDynamoDBPaginatedOutput
-//                    print(self.pagniatedOutput!.items)
-//                    for item in self.pagniatedOutput!.items as! [DDBTableRow] {
-//                        self.tableRows?.append(item)
-//                        print(self.tableRows);
+    
+    
+    
+//    func download(downloadRequest: AWSS3TransferManagerDownloadRequest) {
+//        switch (downloadRequest.state) {
+//        case .NotStarted, .Paused:
+//            let downloadingFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("restaurantsmart").URLByAppendingPathComponent("a.JPG")
+//            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//            transferManager.download(downloadRequest).continueWithBlock({ (task) -> AnyObject! in
+//                if let error = task.error {
+//                    if error.domain == AWSS3TransferManagerErrorDomain as String
+//                        && AWSS3TransferManagerErrorType(rawValue: error.code) == AWSS3TransferManagerErrorType.Paused {
+//                        print("Download paused.")
+//                    } else {
+//                        print("download failed1: [\(error)]")
 //                    }
+//                } else if let exception = task.exception {
+//                    print("download failed: [\(exception)]")
+//                } else {
+//                    let data = NSData(contentsOfURL: downloadingFileURL)
+//                    self.outimage = UIImage(data: data!)
 //                }
-//                self.performSegueWithIdentifier("unwindToMainSegue", sender: self)
-//            }
-//            return nil
-//        })
-//        dynamodbMapper.query(DDBTableRow.self, expression: queryExpression)
-////        queryExpression.hashKeyValues = self.
+//                return nil
+//            })
+//            
+//            break
+//        default:
+//            break
+//        }
+//    }
+    
+    
+    func getdata(){
+        print("good")
+        let scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.limit = 10
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        dynamoDBObjectMapper.scan(DDBTableRow.self, expression: scanExpression).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: { (task:AWSTask!) -> AnyObject! in
+            if (task.result != nil){
+                let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                for item in paginatedOutput.items as! [DDBTableRow] {
+                    let R = Restaurant(name:item.UserName!, photo: self.outimage, rating: item.Rating as! Int,id: item.ObjectId!)
+                    self.restaurants.append(R!)
+                    self.tableView.reloadData()
+                    self.tableRows?.append(item)
+                    print(self.tableRows)
+                }
+            }
+            return nil
+            })
+
+        var getimage:UIImage?
         let query = PFQuery(className:"Restaurant")
         query.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in
@@ -137,8 +138,9 @@ class RestaurantTableViewController: UITableViewController {
                             (imageData: NSData?, error: NSError?) -> Void in
                             if error == nil {
                                 if let imageData = imageData {
+                                    getimage = UIImage(data:imageData)
                                     let image = UIImage(data:imageData)
-                                    let R = Restaurant(name: object["restaurantName"] as! String, photo: image, rating:object["score"] as! Int)
+                                    let R = Restaurant(name: object["restaurantName"] as! String, photo: image, rating:object["score"] as! Int, id: "" )
                                     self.restaurants.append(R!)
                                     self.tableView.reloadData()
                                 }
@@ -206,7 +208,7 @@ class RestaurantTableViewController: UITableViewController {
         if (segue.identifier == "restTOmeal"){
             let selectedIndex=self.tableView.indexPathForCell(sender as! RestaurantTableViewCell)
             let svc = segue.destinationViewController as! MealTableViewController;
-            svc.toPassrest=restaurants[(selectedIndex!.row)].name;
+            svc.toPassrest=restaurants[(selectedIndex!.row)].restaurantId;
             svc.toUser=toUser
             svc.hot = hot
             svc.cold = cold
@@ -216,3 +218,4 @@ class RestaurantTableViewController: UITableViewController {
     
 
 }
+
