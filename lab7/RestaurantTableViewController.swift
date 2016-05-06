@@ -73,37 +73,8 @@ class RestaurantTableViewController: UITableViewController {
     
     
     
-//    func download(downloadRequest: AWSS3TransferManagerDownloadRequest) {
-//        switch (downloadRequest.state) {
-//        case .NotStarted, .Paused:
-//            let downloadingFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("restaurantsmart").URLByAppendingPathComponent("a.JPG")
-//            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-//            transferManager.download(downloadRequest).continueWithBlock({ (task) -> AnyObject! in
-//                if let error = task.error {
-//                    if error.domain == AWSS3TransferManagerErrorDomain as String
-//                        && AWSS3TransferManagerErrorType(rawValue: error.code) == AWSS3TransferManagerErrorType.Paused {
-//                        print("Download paused.")
-//                    } else {
-//                        print("download failed1: [\(error)]")
-//                    }
-//                } else if let exception = task.exception {
-//                    print("download failed: [\(exception)]")
-//                } else {
-//                    let data = NSData(contentsOfURL: downloadingFileURL)
-//                    self.outimage = UIImage(data: data!)
-//                }
-//                return nil
-//            })
-//            
-//            break
-//        default:
-//            break
-//        }
-//    }
-    
     
     func getdata(){
-        print("good")
         let scanExpression = AWSDynamoDBScanExpression()
         scanExpression.limit = 10
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
@@ -111,97 +82,16 @@ class RestaurantTableViewController: UITableViewController {
             if (task.result != nil){
                 let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
                 for item in paginatedOutput.items as! [DDBTableRow] {
-                    let R = Restaurant(name:item.UserName!, photo: item.UserName!, rating: item.Rating as! Int,id: item.ObjectId!,distance: item.Distance!)
+                    let R = Restaurant(name:item.UserName!, photo: item.UserName!, rating: Int(item.Rating),id: item.ObjectId!,distance: item.Distance!)
                     self.restaurants.append(R!)
                     self.tableView.reloadData()
                     self.tableRows?.append(item)
-                    print(self.tableRows)
                 }
             }
             return nil
             })
-
-//        var getimage:UIImage?
-//        let query = PFQuery(className:"Restaurant")
-//        query.findObjectsInBackgroundWithBlock {
-//            (objects: [PFObject]?, error: NSError?) -> Void in
-//            if error == nil {
-//                // The find succeeded.
-//                print("Successfully retrieved \(objects!.count) scores.")
-//                // Do something with the found objects
-//                if let objects = objects! as? [PFObject] {
-//                    for object in objects {
-//                        let restaurantImage=object["photo"] as! PFFile
-//                        restaurantImage.getDataInBackgroundWithBlock {
-//                            (imageData: NSData?, error: NSError?) -> Void in
-//                            if error == nil {
-//                                if let imageData = imageData {
-//                                    getimage = UIImage(data:imageData)
-//                                    let image = UIImage(data:imageData)
-//                                    let R = Restaurant(name: object["restaurantName"] as! String, photo: image, rating:object["score"] as! Int, id: "" )
-//                                    self.restaurants.append(R!)
-//                                    self.tableView.reloadData()
-//                                }
-//                            }
-//                        }
-//                        
-//                    }
-//                }
-//            } else {
-//                // Log details of the failure
-//                print("Error: \(error!) \(error!.userInfo)")
-//            }
-//        }
     }
-
-    //override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        //CODE TO BE RUN ON CELL TOUCH
-        //self.performSegueWithIdentifier("RestaurantViewController", sender: self)
-    //}
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "restTOmeal"){
             let selectedIndex=self.tableView.indexPathForCell(sender as! RestaurantTableViewCell)

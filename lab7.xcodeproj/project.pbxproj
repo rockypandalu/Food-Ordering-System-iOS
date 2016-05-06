@@ -52,9 +52,9 @@
 		5CF2453F1BF0E7F900B7C17D /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF2453D1BF0E7F900B7C17D /* ResultViewController.swift */; };
 		AF2ACF8C1BFC32EA00882AD9 /* loginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2ACF8B1BFC32EA00882AD9 /* loginViewController.swift */; };
 		AF2ACF8E1BFC330900882AD9 /* signupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2ACF8D1BFC330900882AD9 /* signupViewController.swift */; };
-		E8239F801CB202B0003EB8EB /* DDBTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8239F7F1CB202B0003EB8EB /* DDBTableRow.swift */; };
 		E8239F821CB420D6003EB8EB /* DDBOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8239F811CB420D6003EB8EB /* DDBOrder.swift */; };
 		E868704A1CC686E600298C0E /* DDBMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86870491CC686E600298C0E /* DDBMeal.swift */; };
+		E8A5BF8D1CDD43D20033743E /* DDBTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A5BF8C1CDD43D20033743E /* DDBTableRow.swift */; };
 		E8F5409A1CD9A1EF0005D883 /* DDBFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F540991CD9A1EF0005D883 /* DDBFeedback.swift */; };
 /* End PBXBuildFile section */
 
@@ -119,9 +119,9 @@
 		AC9EE2B4AC8193AF8D9A42A0 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF2ACF8B1BFC32EA00882AD9 /* loginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loginViewController.swift; sourceTree = "<group>"; };
 		AF2ACF8D1BFC330900882AD9 /* signupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = signupViewController.swift; sourceTree = "<group>"; };
-		E8239F7F1CB202B0003EB8EB /* DDBTableRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DDBTableRow.swift; path = ../../../../../DDBTableRow.swift; sourceTree = "<group>"; };
 		E8239F811CB420D6003EB8EB /* DDBOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDBOrder.swift; sourceTree = "<group>"; };
 		E86870491CC686E600298C0E /* DDBMeal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDBMeal.swift; sourceTree = "<group>"; };
+		E8A5BF8C1CDD43D20033743E /* DDBTableRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDBTableRow.swift; sourceTree = "<group>"; };
 		E8F540991CD9A1EF0005D883 /* DDBFeedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDBFeedback.swift; sourceTree = "<group>"; };
 		E8F9D7F41CAF436C00DB515C /* BridgeHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgeHeader.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -182,7 +182,7 @@
 				5C14AF431BEFDE55006E9267 /* Restaurant.swift */,
 				5C14AF391BEFC9A2006E9267 /* RestaurantTableViewCell.swift */,
 				5C14AF3D1BEFDAEA006E9267 /* RestaurantTableViewController.swift */,
-				E8239F7F1CB202B0003EB8EB /* DDBTableRow.swift */,
+				E8A5BF8C1CDD43D20033743E /* DDBTableRow.swift */,
 				5C14AF511BF0495A006E9267 /* RatingControl.swift */,
 			);
 			name = Restaurant;
@@ -499,7 +499,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8239F801CB202B0003EB8EB /* DDBTableRow.swift in Sources */,
 				5C93AE181BFA1ACF0085AC49 /* FeedbackControl.swift in Sources */,
 				E868704A1CC686E600298C0E /* DDBMeal.swift in Sources */,
 				E8F5409A1CD9A1EF0005D883 /* DDBFeedback.swift in Sources */,
@@ -508,6 +507,7 @@
 				5CD336101BF063CD001E8600 /* MealTableViewCell.swift in Sources */,
 				5C7CEAB51BF7BB9200B3A2A0 /* PlaceOrderViewController.swift in Sources */,
 				5C14AF441BEFDE55006E9267 /* Restaurant.swift in Sources */,
+				E8A5BF8D1CDD43D20033743E /* DDBTableRow.swift in Sources */,
 				5C568E111BF3CCB400F48F81 /* UIImageViewExtension.swift in Sources */,
 				5CD336131BF06466001E8600 /* MealTableViewController.swift in Sources */,
 				5C568E101BF3CCB400F48F81 /* QRCode.swift in Sources */,
