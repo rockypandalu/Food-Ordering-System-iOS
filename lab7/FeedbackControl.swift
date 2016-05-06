@@ -67,16 +67,13 @@ class FeedbackControl: UIView {
     
     func ratingButtonTapped(button: UIButton) {
         rating = ratingButtons.indexOf(button)! + 1
-        var query = PFQuery(className:"Order")
-        query.getObjectInBackgroundWithId(ID) {
-            (gameScore: PFObject?, error: NSError?) -> Void in
-            if error != nil {
-                print(error)
-            } else if let gameScore = gameScore {
-                gameScore["feedback"] = self.rating
-                gameScore.saveInBackground()
-            }
-        }
+        let tableRow = DDBFeedback()
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let tasks = NSMutableArray()
+
+        tableRow.ID = ID;
+        tableRow.Rating = rating
+        tasks.addObject(dynamoDBObjectMapper.save(tableRow))
         updateButtonSelectionStates()
     }
     

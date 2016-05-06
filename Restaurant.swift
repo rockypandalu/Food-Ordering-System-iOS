@@ -12,17 +12,19 @@ class Restaurant {
     // MARK: Properties
     
     var name: String
-    var photo: UIImage?
+    var photo: String
     var rating : Int
     var restaurantId: String
+    var distance: NSNumber
     // MARK: Initialization
     
-    init?(name: String, photo: UIImage?, rating: Int, id: String) {
+    init?(name: String, photo: String, rating: Int, id: String, distance: NSNumber) {
         // Initialize stored properties.
         self.name = name
         self.photo = photo
         self.rating = rating
         self.restaurantId = id
+        self.distance = distance
         // Initialization should fail if there is no name or if the rating is negative.
         if name.isEmpty{
             return nil

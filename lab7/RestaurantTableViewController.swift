@@ -11,8 +11,6 @@ import Parse
 class RestaurantTableViewController: UITableViewController {
 // MARK: Properties
     var restaurants = [Restaurant]()
-    var hot = 0;
-    var cold = 0;
     var Order: [String] = []
     //************只需要给toUser赋予传过来的username就大功告成了！
     var pagniatedOutput: AWSDynamoDBPaginatedOutput?
@@ -66,7 +64,7 @@ class RestaurantTableViewController: UITableViewController {
         let restaurant=restaurants[indexPath.row]
         cell.RestaurantLabel.text=restaurant.name
 //        cell.RestaurantImage.image=restaurant.photo
-        cell.RestaurantImage.image = UIImage(named: "Uncle Luo Yang")
+        cell.RestaurantImage.image = UIImage(named: restaurant.photo)
         cell.ratingControl.rating=restaurant.rating
       //cell.ratingRatingControl.rating=restaurant.rating
         
@@ -113,7 +111,7 @@ class RestaurantTableViewController: UITableViewController {
             if (task.result != nil){
                 let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
                 for item in paginatedOutput.items as! [DDBTableRow] {
-                    let R = Restaurant(name:item.UserName!, photo: self.outimage, rating: item.Rating as! Int,id: item.ObjectId!)
+                    let R = Restaurant(name:item.UserName!, photo: item.UserName!, rating: item.Rating as! Int,id: item.ObjectId!,distance: item.Distance!)
                     self.restaurants.append(R!)
                     self.tableView.reloadData()
                     self.tableRows?.append(item)
@@ -123,37 +121,37 @@ class RestaurantTableViewController: UITableViewController {
             return nil
             })
 
-        var getimage:UIImage?
-        let query = PFQuery(className:"Restaurant")
-        query.findObjectsInBackgroundWithBlock {
-            (objects: [PFObject]?, error: NSError?) -> Void in
-            if error == nil {
-                // The find succeeded.
-                print("Successfully retrieved \(objects!.count) scores.")
-                // Do something with the found objects
-                if let objects = objects! as? [PFObject] {
-                    for object in objects {
-                        let restaurantImage=object["photo"] as! PFFile
-                        restaurantImage.getDataInBackgroundWithBlock {
-                            (imageData: NSData?, error: NSError?) -> Void in
-                            if error == nil {
-                                if let imageData = imageData {
-                                    getimage = UIImage(data:imageData)
-                                    let image = UIImage(data:imageData)
-                                    let R = Restaurant(name: object["restaurantName"] as! String, photo: image, rating:object["score"] as! Int, id: "" )
-                                    self.restaurants.append(R!)
-                                    self.tableView.reloadData()
-                                }
-                            }
-                        }
-                        
-                    }
-                }
-            } else {
-                // Log details of the failure
-                print("Error: \(error!) \(error!.userInfo)")
-            }
-        }
+//        var getimage:UIImage?
+//        let query = PFQuery(className:"Restaurant")
+//        query.findObjectsInBackgroundWithBlock {
+//            (objects: [PFObject]?, error: NSError?) -> Void in
+//            if error == nil {
+//                // The find succeeded.
+//                print("Successfully retrieved \(objects!.count) scores.")
+//                // Do something with the found objects
+//                if let objects = objects! as? [PFObject] {
+//                    for object in objects {
+//                        let restaurantImage=object["photo"] as! PFFile
+//                        restaurantImage.getDataInBackgroundWithBlock {
+//                            (imageData: NSData?, error: NSError?) -> Void in
+//                            if error == nil {
+//                                if let imageData = imageData {
+//                                    getimage = UIImage(data:imageData)
+//                                    let image = UIImage(data:imageData)
+//                                    let R = Restaurant(name: object["restaurantName"] as! String, photo: image, rating:object["score"] as! Int, id: "" )
+//                                    self.restaurants.append(R!)
+//                                    self.tableView.reloadData()
+//                                }
+//                            }
+//                        }
+//                        
+//                    }
+//                }
+//            } else {
+//                // Log details of the failure
+//                print("Error: \(error!) \(error!.userInfo)")
+//            }
+//        }
     }
 
     //override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -210,9 +208,12 @@ class RestaurantTableViewController: UITableViewController {
             let svc = segue.destinationViewController as! MealTableViewController;
             svc.toPassrest=restaurants[(selectedIndex!.row)].restaurantId;
             svc.toUser=toUser
-            svc.hot = hot
-            svc.cold = cold
+            svc.hot = 0
+            svc.cold = 0
             svc.Order = Order
+            svc.drink = 0
+            svc.price = 0
+            svc.distance=restaurants[(selectedIndex!.row)].distance
         }
     }
     

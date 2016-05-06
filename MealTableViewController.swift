@@ -16,9 +16,12 @@ class MealTableViewController: UITableViewController {
     var toPassrest: String!
     var meals = [Meal]()
     var toUser:String!
-    var hot:Int = 0
-    var cold:Int = 0
+    var hot:Int!
+    var cold: Int!
+    var drink: Int!
     var Order: ([String])?
+    var distance: NSNumber!
+    var price:Float!
     var pagniatedOutput: AWSDynamoDBPaginatedOutput?
 
     override func viewDidLoad() {
@@ -26,33 +29,7 @@ class MealTableViewController: UITableViewController {
         // Load the sample data.
         //loadSampleMeals()
         getdata()
-//        let testObject = PFObject(className: "TestObject")
-//        testObject["foo"] = "bar"
-//        testObject.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
-//            print("Object has been saved.")
-//        }
-//        var query = PFQuery(className:"GameScore")
-//        query.getObjectInBackgroundWithId("xWMyZEGZ") {
-//            (gameScore: PFObject?, error: NSError?) -> Void in
-//            if error == nil && gameScore != nil {
-//                print(gameScore)
-//            } else {
-//                print(error)
-//            }
-//        }
-        /*
-        var gameScore = PFObject(className:"TestObject")
-        gameScore["score"] = 1337
-        gameScore["playerName"] = "Sean Plott"
-        gameScore["cheatMode"] = false
-        gameScore.saveInBackgroundWithBlock {
-            (success: Bool, error: NSError?) -> Void in
-            if (success) {
-                // The object has been saved.
-            } else {
-                // There was a problem, check error.description
-            }
-        }*/
+
     }
 
 
@@ -67,17 +44,11 @@ class MealTableViewController: UITableViewController {
                 for item in paginatedOutput.items as! [DDBMeal] {
 
                     if (item.restaurantId! == self.toPassrest){
-                        let R = Meal(name: item.mealName!, photo: nil, price:item.price as! Float, calorie:item.calorie as! Int, nutrition:item.majorNutrition!, HotCold: 2)
+                        let R = Meal(name: item.mealName!, photo: item.mealName!, price:item.price as! Float, calorie:item.calorie as! Int, nutrition:item.majorNutrition!, HotCold: item.hotColdDrink as! Int)
                         self.meals.append(R!)
                         self.tableView.reloadData()
                     }
-//                    let R = Meal(name: item.mealName!, photo: nil, price:item.price as! Float, calorie:item.calorie as! Int, nutrition:item.majorNutrition!, HotCold: item.hotColdDrink!)
 
-//                    let R = Restaurant(name:item.UserName!, photo: nil, rating: item.Rating as! Int)
-//                    self.restaurants.append(R!)
-//                    self.tableView.reloadData()
-//                    self.tableRows?.append(item)
-//                    print(self.tableRows)
                 }
             }
             return nil
@@ -173,7 +144,7 @@ class MealTableViewController: UITableViewController {
         let meal = meals[indexPath.row]
         
         cell.MealLabel.text = meal.name
-        cell.MealImageView.image = meal.photo
+        cell.MealImageView.image = UIImage(named: meal.photo)
         cell.MealPriceLabel.text=NSString(format: "%.2f", meal.price) as String
         return cell
     }
@@ -194,31 +165,38 @@ class MealTableViewController: UITableViewController {
     if (segue.identifier == "ToPlaceOrder"){
         let selectedIndex=self.tableView.indexPathForCell(sender as! MealTableViewCell)
         let svc = segue.destinationViewController as! PlaceOrderViewController;
+        print(hot)
+        print(meals[(selectedIndex!.row)].HotCold)
         switch meals[(selectedIndex!.row)].HotCold{
         case 1:
             hot = hot+1
         case 2:
             cold = cold+1
+        case 3:
+            drink = drink+1
+            
         default:
             print("hehe")
         }
+        print(hot)
 //        if (meals[(selectedIndex!.row)].HotCold){
 //            hot = hot + 1
 //        }
 //        else{
 //            cold = cold + 1
 //        }
-        svc.toPassImage=meals[(selectedIndex!.row)].photo
         svc.toPassMeal=meals[(selectedIndex!.row)].name
-        svc.toPassPrice=NSString(format: "%.2f", meals[(selectedIndex!.row)].price) as String
-        svc.toPassCal=meals[(selectedIndex!.row)].calorie
-        svc.toPassNut=meals[(selectedIndex!.row)].majorNutrition
+//        svc.toPassPrice=price + NSString(format: "%.2f", meals[(selectedIndex!.row)].price) as String
+        svc.toPassPrice=price + Float(meals[(selectedIndex!.row)].price)
+
         svc.toPassRest=toPassrest
         svc.toUser=toUser
         svc.cold=cold
         svc.hot=hot
+        svc.distance=distance
         Order?.append(meals[(selectedIndex!.row)].name)
         svc.Order = Order!
+        svc.drink=drink
 //        svc.Order = Order.append("hehe")
 //        svc.Order=Order.append(meals[(selectedIndex!.row)].name)
         

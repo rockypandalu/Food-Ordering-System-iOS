@@ -16,23 +16,22 @@ class PlaceOrderViewController: UIViewController {
     @IBOutlet weak var deliveryDataPicker: UIDatePicker!
     @IBOutlet weak var DispPlaceButton: UIButton!
     
-    @IBOutlet weak var recommendation: UILabel!
 
+    @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var orderSummaryLabel: UILabel!
     
-    @IBOutlet weak var recimage: UIImageView!
     
     var toPassRest: String!
     var toPassImage: UIImage?
     var toPass: String!
     var toPassMeal: String!
-    var toPassPrice: String!
-    var toPassCal: Int!
-    var toPassNut: String!
+    var toPassPrice: Float!
     var toUser: String!
     var hot:Int!
     var cold:Int!
+    var drink: Int!
     var Order: [String] = []
+    var distance: NSNumber!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,60 +39,33 @@ class PlaceOrderViewController: UIViewController {
         for order in Order{
             summaryOrder = summaryOrder+", "+order
         }
+        priceLabel.text=NSString(format: "%.2f", toPassPrice) as String
         orderSummaryLabel.text = String(summaryOrder.characters.dropFirst())
-        recommend()
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "ToQrCode"){
             let svc = segue.destinationViewController as! ResultViewController;
-            let itemSecureNumber=Int(arc4random_uniform(99999999))
-            svc.toPass = NSString(format: "%d",itemSecureNumber) as String
-            svc.toPassMeal=toPassMeal
-            svc.toPassPrice=toPassPrice
-            let orderinfo = PFObject(className:"Order")
-            orderinfo["restaurantName"] = toPassRest
-            orderinfo["meal"]=toPassMeal
-            let price=toPassPrice as NSString
-            orderinfo["price"]=price.floatValue
-            orderinfo["calorie"]=toPassCal
-            orderinfo["majorNutrition"]=toPassNut
-            orderinfo["securenumber"]=svc.toPass
-            orderinfo["isdone"] = 0
-            orderinfo["user"]=toUser
-            orderinfo["feedback"]=(-1)
-            orderinfo.saveInBackgroundWithBlock { (success, error) -> Void in
-                if (success) {
-                    svc.toID=orderinfo.objectId
-                }
-                else {
-                    //  Log details of the failure
-                    print("failure - didRegisterForRemoteNotificationsWithDeviceToken")
-                    print("Error: \(error!) \(error!.userInfo)")
-                }
-            }
+//            let itemSecureNumber=Int(arc4random_uniform(99999999))
+//            svc.toPass = NSString(format: "%d",itemSecureNumber) as String
+            let uuid = NSUUID().UUIDString
+            svc.toID=uuid
             let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
             let tasks = NSMutableArray()
             let tableRow = DDBOrder()
-            let uuid = NSUUID().UUIDString
             let date=deliveryDataPicker.date
             let calendar = NSCalendar.currentCalendar()
             let curTime = calendar.components([NSCalendarUnit.Hour, NSCalendarUnit.Minute] , fromDate: date)
-            
             tableRow.ID = uuid;
             tableRow.OrderTime = curTime.hour*60+curTime.minute
-            tableRow.Restaurant = 1
-            tableRow.HotFood = cold
-            tableRow.ColdFood = hot
-            tableRow.Distance = 1000
-            tableRow.Drink = 2
+            tableRow.Restaurant = Int(toPassRest)!%2
+            print(tableRow.Restaurant)
+            tableRow.HotFood = hot
+            tableRow.ColdFood = cold
+            tableRow.Distance = distance
+            tableRow.Drink = drink
             tableRow.Order = Order.joinWithSeparator(";")
             tasks.addObject(dynamoDBObjectMapper.save(tableRow))
-
             
-            while orderinfo.objectId==nil{
-                usleep(100)
-            }
-            svc.toID=orderinfo.objectId
 
 //            let dynamoDBObjectMapper0 = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
 //            let tasks0 = NSMutableArray()
@@ -170,7 +142,9 @@ class PlaceOrderViewController: UIViewController {
             svc.cold=cold
             svc.hot=hot
             svc.Order=Order
-
+            svc.drink=drink
+            svc.distance=distance
+            svc.price = toPassPrice
         }
     }
     
@@ -179,56 +153,56 @@ class PlaceOrderViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func recommend(){
-        PFCloud.callFunctionInBackground("recommendation", withParameters: ["meal": toPassMeal]) {
-            (response: AnyObject?, error: NSError?) -> Void in
-            
-            if error == nil {
-                // This is working:
-                let rec = response as!NSString
-                //print("People order this may also like: \(objects)")
-                if rec == "No result"{
-                    self.recommendation.hidden = true
-                    self.recimage.hidden = true
-                }
-                else{
-                    self.recommendation.text="Customers who ordered this also like:\n \(rec)"
-                    
-                    let query = PFQuery(className:"Meal")
-                    query.whereKey("mealName", equalTo: rec)
-                    query.findObjectsInBackgroundWithBlock {
-                        (objects: [PFObject]?, error: NSError?) -> Void in
-                        if error == nil {
-                            // Do something with the found objects
-                            if let objects = objects! as? [PFObject] {
-                                for object in objects {
-                                    let restaurantImage=object["photo"] as! PFFile
-                                    restaurantImage.getDataInBackgroundWithBlock {
-                                        (imageData: NSData?, error: NSError?) -> Void in
-                                        if error == nil {
-                                            if let imageData = imageData {
-                                                self.recimage.image = UIImage(data:imageData)
-                                            }
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                        } else {
-                            // Log details of the failure
-                            print("Error: \(error!) \(error!.userInfo)")
-                        }
-                    }
-                    
-                }
-            }
-            
-        }
-        
-        
-        
-        
-    }
+//    func recommend(){
+//        PFCloud.callFunctionInBackground("recommendation", withParameters: ["meal": toPassMeal]) {
+//            (response: AnyObject?, error: NSError?) -> Void in
+//            
+//            if error == nil {
+//                // This is working:
+//                let rec = response as!NSString
+//                //print("People order this may also like: \(objects)")
+//                if rec == "No result"{
+//                    self.recommendation.hidden = true
+//                    self.recimage.hidden = true
+//                }
+//                else{
+//                    self.recommendation.text="Customers who ordered this also like:\n \(rec)"
+//                    
+//                    let query = PFQuery(className:"Meal")
+//                    query.whereKey("mealName", equalTo: rec)
+//                    query.findObjectsInBackgroundWithBlock {
+//                        (objects: [PFObject]?, error: NSError?) -> Void in
+//                        if error == nil {
+//                            // Do something with the found objects
+//                            if let objects = objects! as? [PFObject] {
+//                                for object in objects {
+//                                    let restaurantImage=object["photo"] as! PFFile
+//                                    restaurantImage.getDataInBackgroundWithBlock {
+//                                        (imageData: NSData?, error: NSError?) -> Void in
+//                                        if error == nil {
+//                                            if let imageData = imageData {
+//                                                self.recimage.image = UIImage(data:imageData)
+//                                            }
+//                                        }
+//                                    }
+//                                    
+//                                }
+//                            }
+//                        } else {
+//                            // Log details of the failure
+//                            print("Error: \(error!) \(error!.userInfo)")
+//                        }
+//                    }
+//                    
+//                }
+//            }
+//            
+//        }
+//        
+//        
+//        
+//        
+//    }
 
     /*
     // MARK: - Navigation

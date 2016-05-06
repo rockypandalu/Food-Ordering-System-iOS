@@ -9,11 +9,7 @@
 import UIKit
 class ResultViewController: UIViewController {
     @IBOutlet weak var QRImageView: UIImageView!
-    @IBOutlet weak var ResultPriceLabel: UILabel!
-    @IBOutlet weak var ResultMealLabel: UILabel!
-    var toPass: String!
-    var toPassMeal: String!
-    var toPassPrice: String!
+
     var toID: String!
     @IBOutlet weak var hehe: FeedbackControl!
     override func viewDidLoad() {
@@ -25,8 +21,6 @@ class ResultViewController: UIViewController {
             //qrCode?.backgroundColor = CIColor(rgba: "000")
             return qrCode!.image
             }()
-        ResultMealLabel.text=toPassMeal
-        ResultPriceLabel.text=toPassPrice
         self.reloadInputViews()
         while toID==nil{
             sleep(1)
@@ -34,6 +28,32 @@ class ResultViewController: UIViewController {
         hehe.ID=toID
     }
 
+    @IBAction func pickUpAction(sender: AnyObject) {
+        httpPost(toID)
+        print("hehe")
+    }
+
+    
+    func httpPost(command:String){
+        let request = NSMutableURLRequest(URL: NSURL(string:
+            "http://128.59.46.254:5000/openbox")!); request.HTTPMethod = "POST"
+        let postString = command
+        //Show the message sent to PI on IOS device
+        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        print(request.HTTPBody)
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            data, response, error in if error != nil {
+                print("error=\(error)")
+                return}
+            print("response = \(response)")
+            let responseString = NSString(data: data!, encoding:
+                NSUTF8StringEncoding)
+            print("responseString = \(responseString)")
+        }
+        task.resume()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

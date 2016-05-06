@@ -1,37 +1,31 @@
 //
-//  DDBMeal.swift
+//  DDBFeedback.swift
 //  lab7
 //
-//  Created by Yan Lu on 16/4/19.
+//  Created by Yan Lu on 16/5/3.
 //  Copyright © 2016年 rocky. All rights reserved.
 //
 
-import Foundation
-class DDBMeal :AWSDynamoDBObjectModel ,AWSDynamoDBModeling  {
+class DDBFeedback :AWSDynamoDBObjectModel ,AWSDynamoDBModeling  {
     
-    var mealId:String?
-    var mealName:String?
-    var restaurantId: String?
-    var calorie:NSNumber?
-    var majorNutrition:String?
-    var hotColdDrink:NSNumber?
-    var image:String?
-    var price: NSNumber?
+    var ID:String?;
+    var Rating:NSNumber? = 0
+
     
     class func dynamoDBTableName() -> String! {
-        return "MealList"
+        return "Order"
     }
     
     
     // if we define attribute it must be included when calling it in function testing...
     class func hashKeyAttribute() -> String! {
-        return "mealId"
+        return "ID"
     }
     
     
     
     class func ignoreAttributes() -> Array<AnyObject>! {
-        return []
+        return ["ColdFood","Distance","Drink","HotFood","Order","OrderTime","Restaurant"]
     }
     
     //MARK: NSObjectProtocol hack
@@ -45,3 +39,4 @@ class DDBMeal :AWSDynamoDBObjectModel ,AWSDynamoDBModeling  {
         return self
     }
 }
+
