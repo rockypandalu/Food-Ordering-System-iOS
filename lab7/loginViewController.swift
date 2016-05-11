@@ -31,19 +31,54 @@ class loginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        update("Macdonald")
-        update("Xian Famous Food")
-        update("Panda Express")
         // Do any additional setup after loading the view.
+        
+        
+//        let dynamoDBObjectMapper0 = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+//        let tasks0 = NSMutableArray()
+//        let tableRow0 = DDBMeal()
+//        tableRow0.mealId=NSUUID().UUIDString
+//        tableRow0.mealName="Salad"
+//        tableRow0.restaurantId="1"
+//
+//        tableRow0.hotColdDrink=2
+//        tableRow0.price=3.99
+//        tasks0.addObject(dynamoDBObjectMapper0.save(tableRow0))
+//        print("done")
+//        
+//        let dynamoDBObjectMapper3 = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+//        let tasks3 = NSMutableArray()
+//        let tableRow3 = DDBMeal()
+//        tableRow3.mealId=NSUUID().UUIDString
+//        tableRow3.mealName="Cola"
+//        tableRow3.restaurantId="1"
+//
+//        tableRow3.hotColdDrink=3
+//        tableRow3.price=2.99
+//        tasks3.addObject(dynamoDBObjectMapper3.save(tableRow3))
+//        print("done")
+//        
+//        let dynamoDBObjectMapper4 = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+//        let tasks4 = NSMutableArray()
+//        let tableRow4 = DDBMeal()
+//        tableRow4.mealId=NSUUID().UUIDString
+//        tableRow4.mealName="Original Recipe"
+//        tableRow4.restaurantId="1"
+//        tableRow4.hotColdDrink=1
+//        tableRow4.price=3.99
+//        tasks4.addObject(dynamoDBObjectMapper4.save(tableRow4))
+//        print("done")
+
+
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
     
-
-
     func loginMethod(){
         PFUser.logInWithUsernameInBackground( username.text!, password: password.text!){(user:PFUser?, error:NSError?) -> Void in
             if user != nil{
@@ -68,14 +103,11 @@ class loginViewController: UIViewController {
             if error == nil {
                 // This is working:
                 let score = response as!NSNumber
-                print("Average score of \(restaurant): \(score)")
                 
                 PFCloud.callFunctionInBackground("restaurantFeedbackUpdate", withParameters: ["restaurantName": restaurant,"score":score]) {
                     (response: AnyObject?, error: NSError?) -> Void in
                     if error == nil {
                         // This is working:
-                        let message = response as!NSString
-                        print("\(restaurant) update: \(message)")
                     }
                 }
             }

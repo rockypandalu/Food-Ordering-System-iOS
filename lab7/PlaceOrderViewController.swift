@@ -57,7 +57,11 @@ class PlaceOrderViewController: UIViewController {
             let curTime = calendar.components([NSCalendarUnit.Hour, NSCalendarUnit.Minute] , fromDate: date)
             tableRow.ID = uuid;
             tableRow.OrderTime = curTime.hour*60+curTime.minute
-            tableRow.Restaurant = Int(toPassRest)!%2
+            var rid=Int(toPassRest)!%2
+            if (rid==0){
+                rid=1
+            }
+            tableRow.Restaurant = rid
             print(tableRow.Restaurant)
             tableRow.HotFood = hot
             tableRow.ColdFood = cold
@@ -66,62 +70,6 @@ class PlaceOrderViewController: UIViewController {
             tableRow.Order = Order.joinWithSeparator(";")
             tasks.addObject(dynamoDBObjectMapper.save(tableRow))
             
-
-//            let dynamoDBObjectMapper0 = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-//            let tasks0 = NSMutableArray()
-//            let tableRow0 = DDBMeal()
-//            tableRow0.mealId=NSUUID().UUIDString
-//            tableRow0.mealName="Salad"
-//            tableRow0.restaurantId="3"
-//            tableRow0.calorie=600
-//            tableRow0.majorNutrition="Vitamin"
-//            tableRow0.hotColdDrink=2
-//            tableRow0.image="hehe"
-//            tableRow0.price=4.99
-//            tasks0.addObject(dynamoDBObjectMapper0.save(tableRow0))
-//            print("done")
-//            
-//            let dynamoDBObjectMapper3 = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-//            let tasks3 = NSMutableArray()
-//            let tableRow3 = DDBMeal()
-//            tableRow3.mealId=NSUUID().UUIDString
-//            tableRow3.mealName="Cola"
-//            tableRow3.restaurantId="3"
-//            tableRow3.calorie=600
-//            tableRow3.majorNutrition="Sugar"
-//            tableRow3.hotColdDrink=3
-//            tableRow3.image="hehe"
-//            tableRow3.price=1.99
-//            tasks3.addObject(dynamoDBObjectMapper3.save(tableRow3))
-//            print("done")
-//            
-//            let dynamoDBObjectMapper4 = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-//            let tasks4 = NSMutableArray()
-//            let tableRow4 = DDBMeal()
-//            tableRow4.mealId=NSUUID().UUIDString
-//            tableRow4.mealName="Beef Pizza"
-//            tableRow4.restaurantId="3"
-//            tableRow4.calorie=2500
-//            tableRow4.majorNutrition="Protein"
-//            tableRow4.hotColdDrink=1
-//            tableRow4.image="hehe"
-//            tableRow4.price=7.99
-//            tasks4.addObject(dynamoDBObjectMapper4.save(tableRow4))
-//            print("done")
-//            
-//            let dynamoDBObjectMapper5 = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-//            let tasks5 = NSMutableArray()
-//            let tableRow5 = DDBMeal()
-//            tableRow5.mealId=NSUUID().UUIDString
-//            tableRow5.mealName="Chicken Pizza"
-//            tableRow5.restaurantId="3"
-//            tableRow5.calorie=2400
-//            tableRow5.majorNutrition="Protein"
-//            tableRow5.hotColdDrink=1
-//            tableRow5.price=7.49
-//            tableRow5.image="hehe"
-//            tasks5.addObject(dynamoDBObjectMapper5.save(tableRow5))
-//            print("done")
             
 //            Used to add restaurant data
             

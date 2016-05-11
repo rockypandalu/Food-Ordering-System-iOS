@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Hfe-o2-s9x">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Hfe-o2-s9x">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -425,10 +425,9 @@
                                 <rect key="frame" x="163" y="491" width="257" height="49"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6B2-QR-t0n">
-                                <rect key="frame" x="266" y="410" width="69" height="38"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                <state key="normal" title="Pick Up"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6B2-QR-t0n">
+                                <rect key="frame" x="230" y="403" width="141" height="52"/>
+                                <state key="normal" image="pickup"/>
                                 <connections>
                                     <action selector="pickUpAction:" destination="7oN-JW-BFd" eventType="touchDown" id="lIY-HJ-hZJ"/>
                                 </connections>
@@ -439,6 +438,7 @@
                             <constraint firstItem="WpE-RN-60e" firstAttribute="centerX" secondItem="i8L-3t-7LP" secondAttribute="centerX" id="0pC-q2-cpb"/>
                             <constraint firstItem="DnT-FD-VPU" firstAttribute="centerX" secondItem="i8L-3t-7LP" secondAttribute="centerX" id="9kJ-H3-07n"/>
                             <constraint firstItem="WpE-RN-60e" firstAttribute="centerY" secondItem="i8L-3t-7LP" secondAttribute="centerY" id="Qfg-dB-fr7"/>
+                            <constraint firstItem="guZ-tb-d4I" firstAttribute="top" secondItem="6B2-QR-t0n" secondAttribute="bottom" constant="36" id="S7R-GP-TyB"/>
                             <constraint firstItem="6B2-QR-t0n" firstAttribute="centerX" secondItem="i8L-3t-7LP" secondAttribute="centerX" id="fTe-rG-vYb"/>
                             <constraint firstItem="guZ-tb-d4I" firstAttribute="centerX" secondItem="i8L-3t-7LP" secondAttribute="centerX" id="k8q-me-v7K"/>
                             <constraint firstItem="WpE-RN-60e" firstAttribute="top" secondItem="DnT-FD-VPU" secondAttribute="bottom" constant="8" id="nQe-EQ-KMM"/>
@@ -475,6 +475,7 @@
     </scenes>
     <resources>
         <image name="AddMore" width="141" height="52"/>
+        <image name="pickup" width="141" height="52"/>
         <image name="placeorder" width="141" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>

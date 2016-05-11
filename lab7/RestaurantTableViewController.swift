@@ -82,6 +82,8 @@ class RestaurantTableViewController: UITableViewController {
             if (task.result != nil){
                 let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
                 for item in paginatedOutput.items as! [DDBTableRow] {
+                    print(item)
+                    print("hehe")
                     let R = Restaurant(name:item.UserName!, photo: item.UserName!, rating: Int(item.Rating),id: item.ObjectId!,distance: item.Distance!)
                     self.restaurants.append(R!)
                     self.tableView.reloadData()

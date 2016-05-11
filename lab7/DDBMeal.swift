@@ -12,10 +12,7 @@ class DDBMeal :AWSDynamoDBObjectModel ,AWSDynamoDBModeling  {
     var mealId:String?
     var mealName:String?
     var restaurantId: String?
-    var calorie:NSNumber?
-    var majorNutrition:String?
     var hotColdDrink:NSNumber?
-    var image:String?
     var price: NSNumber?
     
     class func dynamoDBTableName() -> String! {

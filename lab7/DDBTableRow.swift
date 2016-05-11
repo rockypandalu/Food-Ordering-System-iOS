@@ -16,7 +16,7 @@ class DDBTableRow :AWSDynamoDBObjectModel ,AWSDynamoDBModeling  {
 
     
     class func dynamoDBTableName() -> String! {
-        return "SmartFoodDelivery"
+        return "Restaurant"
     }
     
     

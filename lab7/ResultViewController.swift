@@ -36,7 +36,7 @@ class ResultViewController: UIViewController {
     
     func httpPost(command:String){
         let request = NSMutableURLRequest(URL: NSURL(string:
-            "http://128.59.46.47:5000/openbox")!); request.HTTPMethod = "POST"
+            "http://129.236.230.130:5000/openbox")!); request.HTTPMethod = "POST"
         let postString = command
         //Show the message sent to PI on IOS device
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
